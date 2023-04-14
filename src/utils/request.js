@@ -1,50 +1,92 @@
-import fetch from 'dva/fetch';
-import qs from "querystring";
+import axios from 'axios'
+import { cloneDeep } from 'lodash'
+import { message } from 'antd'
+import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
+const { parse, compile } = require("path-to-regexp")
 
-function parseJSON(response) {
-  return response.json();
-}
+const { CancelToken } = axios
+window.cancelRequest = new Map()
 
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
+export default function request(options) {
+  let { data, url } = options
+  const cloneData = cloneDeep(data)
+
+  try {
+    let domain = ''
+    const urlMatch = url.match(/[a-zA-z]+:\/\/[^/]*/)
+    if (urlMatch) {
+      ;[domain] = urlMatch
+      url = url.slice(domain.length)
+    }
+
+    const match = parse(url)
+    url = compile(url)(data)
+
+    for (const item of match) {
+      if (item instanceof Object && item.name in cloneData) {
+        delete cloneData[item.name]
+      }
+    }
+    url = domain + url
+  } catch (e) {
+    message.error(e.message)
   }
 
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
-}
+  options.url = url
+  options.cancelToken = new CancelToken(cancel => {
+    window.cancelRequest.set(Symbol(Date.now()), {
+      pathname: window.location.pathname,
+      cancel,
+    })
+  })
 
-function handleHeaders(options) {
-  const headers = options.headers || {};
-  const defaultHeaders = {
-    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-  };
-  options.headers = Object.assign({}, defaultHeaders, headers);
+  return axios(options)
+    .then(response => {
+      const { statusText, status, data } = response
 
-  if (options.method === "post") {
-    let body = options.body || {};
-    body = qs.stringify(body);
-    options.body = body;
-  }
-}
+      let result = {}
+      if (typeof data === 'object') {
+        result = data
+        if (Array.isArray(data)) {
+          result.list = data
+        }
+      } else {
+        result.data = data
+      }
 
-/**
- * Requests a URL, returning a promise.
- *
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- * @return {object}           An object containing either "data" or "err"
- */
-export default function request(url, options) {
-  if (!options.method || options.method === "get") {
-    url += `?${qs.stringify(options.params)}`;
-  }
+      return Promise.resolve({
+        success: true,
+        message: statusText,
+        statusCode: status,
+        ...result,
+      })
+    })
+    .catch(error => {
+      const { response, message } = error
 
-  handleHeaders(options);
-  return fetch(url, options)
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(data => ({ data }))
-    .catch(err => ({ err }));
+      if (String(message) === CANCEL_REQUEST_MESSAGE) {
+        return {
+          success: false,
+        }
+      }
+
+      let msg
+      let statusCode
+
+      if (response && response instanceof Object) {
+        const { data, statusText } = response
+        statusCode = response.status
+        msg = data.message || statusText
+      } else {
+        statusCode = 600
+        msg = error.message || 'Network Error'
+      }
+
+      /* eslint-disable */
+      return Promise.reject({
+        success: false,
+        statusCode,
+        message: msg,
+      })
+    })
 }
