@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Page = () => {
+const User = () => {
   return (
     <div>
-      首页
+      用户
     </div>
   );
 };
 
 
-export default Page;
+export default User;

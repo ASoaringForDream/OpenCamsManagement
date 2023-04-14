@@ -1,9 +1,12 @@
 import dva from 'dva';
 import createLoading from 'dva-loading';
-import './index.css';
+import 'assets/normalize.css';
 
 // 1. Initialize
-const app = dva();
+import { createBrowserHistory as createHistory } from 'history';
+const app = dva({
+  history: createHistory(),
+});
 
 // 2. Plugins
 app.use(createLoading());

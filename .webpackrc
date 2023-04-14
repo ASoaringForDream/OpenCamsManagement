@@ -10,5 +10,13 @@
     "pages":"@/pages",
     "services":"@/services",
     "routes":"@/routes"
-  }
+  },
+  "env": {
+    "development": {
+      "extraBabelPlugins": [
+        "dva-hmr"
+      ]
+    }
+  },
+  "disableCSSModules": true
 }

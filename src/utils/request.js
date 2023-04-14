@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import qs from "querystring";
 
 function parseJSON(response) {
   return response.json();
@@ -14,6 +15,20 @@ function checkStatus(response) {
   throw error;
 }
 
+function handleHeaders(options) {
+  const headers = options.headers || {};
+  const defaultHeaders = {
+    "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+  };
+  options.headers = Object.assign({}, defaultHeaders, headers);
+
+  if (options.method === "post") {
+    let body = options.body || {};
+    body = qs.stringify(body);
+    options.body = body;
+  }
+}
+
 /**
  * Requests a URL, returning a promise.
  *
@@ -22,6 +37,11 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+  if (!options.method || options.method === "get") {
+    url += `?${qs.stringify(options.params)}`;
+  }
+
+  handleHeaders(options);
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)

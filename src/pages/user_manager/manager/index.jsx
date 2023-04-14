@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Page = () => {
+const Manager = () => {
   return (
     <div>
-      首页
+      管理员
     </div>
   );
 };
 
 
-export default Page;
+export default Manager;
