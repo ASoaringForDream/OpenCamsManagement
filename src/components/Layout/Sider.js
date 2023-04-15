@@ -14,10 +14,8 @@ class Sider extends PureComponent {
     const {
       menus,
       theme,
-      isMobile,
       collapsed,
       onThemeChange,
-      onCollapseChange,
     } = this.props
 
     return (
@@ -28,7 +26,6 @@ class Sider extends PureComponent {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        onBreakpoint={!isMobile && onCollapseChange}
         className={styles.sider}
       >
         <div className={styles.brand}>
@@ -48,9 +45,7 @@ class Sider extends PureComponent {
             <SiderMenu
               menus={menus}
               theme={theme}
-              isMobile={isMobile}
               collapsed={collapsed}
-              onCollapseChange={onCollapseChange}
             />
           </ScrollBar>
         </div>
@@ -79,7 +74,6 @@ class Sider extends PureComponent {
 Sider.propTypes = {
   menus: PropTypes.array,
   theme: PropTypes.string,
-  isMobile: PropTypes.bool,
   collapsed: PropTypes.bool,
   onThemeChange: PropTypes.func,
   onCollapseChange: PropTypes.func,

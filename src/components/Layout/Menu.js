@@ -2,8 +2,7 @@ import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Menu } from 'antd'
 import { NavLink, withRouter } from 'umi'
-import { pathToRegexp } from 'path-to-regexp'
-import { arrayToTree, queryAncestors } from 'utils'
+import { queryAncestors } from 'utils'
 import iconMap from 'utils/iconMap'
 import store from 'store'
 
@@ -53,7 +52,7 @@ class SiderMenu extends PureComponent {
       }
       return (
         <Menu.Item key={item.id}>
-          <NavLink to={item.route || '#'}>
+          <NavLink to={item.route}>
             {item.icon && iconMap[item.icon]}
             <span>{item.name}</span>
           </NavLink>
@@ -68,23 +67,10 @@ class SiderMenu extends PureComponent {
       theme,
       menus,
       location,
-      isMobile,
-      onCollapseChange,
     } = this.props
 
-    // Generating tree-structured data for menu content.
-    const menuTree = arrayToTree(menus, 'id', 'menuParentId')
-
-    // Find a menu that matches the pathname.
-    const currentMenu = menus.find(
-      _ => _.route && pathToRegexp(_.route).exec(location.pathname)
-    )
-
     // Find the key that should be selected according to the current menu.
-    const selectedKeys = currentMenu
-      ? queryAncestors(menus, currentMenu, 'menuParentId').map(_ => _.id)
-      : []
-
+    const selectedKeys = queryAncestors(menus, location.pathname)
     const menuProps = collapsed
       ? {}
       : {
@@ -97,16 +83,9 @@ class SiderMenu extends PureComponent {
         theme={theme}
         onOpenChange={this.onOpenChange}
         selectedKeys={selectedKeys}
-        onClick={
-          isMobile
-            ? () => {
-                onCollapseChange(true)
-              }
-            : undefined
-        }
         {...menuProps}
       >
-        {this.generateMenus(menuTree)}
+        {this.generateMenus(menus)}
       </Menu>
     )
   }

@@ -1,4 +1,5 @@
 import { history } from 'umi'
+import { message } from 'antd'
 import api from 'api'
 const { pathToRegexp } = require("path-to-regexp")
 
@@ -18,21 +19,15 @@ const login = {
   // },
   effects: {
     *login({ payload }, { put, call, select }) {
-      const data = yield call(loginUser, payload)
-      const { locationQuery } = yield select(_ => _.app)
-      if (data.success) {
-        const { from } = locationQuery
-        yield put({ type: 'app/query' })
-        if (!pathToRegexp('/login').exec(from)) {
-          if (['', '/'].includes(from)) history.push('/dashboard')
-          else history.push(from)
-        } else {
-          history.push('/dashboard')
-        }
-      } else {
-        throw data
+      const { errno, errmsg, data } = yield call(loginUser, payload)
+      console.log(data);
+      if(!errno) {
+        history.push('/dashboard')
+        message.success('登录成功')
+      }else {
+        message.error(errmsg)
       }
-    },
+    }
   },
 }
 

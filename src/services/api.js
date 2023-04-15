@@ -4,7 +4,7 @@ const PATH_MAP = {
 
   queryUserInfo: '/user',
   logoutUser: '/user/logout',
-  loginUser: 'POST /user/login',
+  loginUser: 'POST /manager/login',
 
   queryUser: '/user/:id',
   queryUserList: '/users',

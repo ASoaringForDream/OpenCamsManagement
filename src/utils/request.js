@@ -7,6 +7,17 @@ const { parse, compile } = require("path-to-regexp")
 const { CancelToken } = axios
 window.cancelRequest = new Map()
 
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  if(config.method === 'post') {
+    // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  }
+  // config.headers.token = window.localStorage.getItem('token');
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});
+
 export default function request(options) {
   let { data, url } = options
   const cloneData = cloneDeep(data)
@@ -31,7 +42,7 @@ export default function request(options) {
   } catch (e) {
     message.error(e.message)
   }
-
+  console.log(options);
   options.url = url
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
