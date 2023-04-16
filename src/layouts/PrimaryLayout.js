@@ -29,16 +29,11 @@ class PrimaryLayout extends PureComponent {
     const user = store.get('user') || {}
     const { onCollapseChange } = this
 
-    // Localized route name.
-
-    const newRouteList = []
-
-
     const headerProps = {
       collapsed,
       notifications,
       onCollapseChange,
-      avatar: user.avatar,
+      avatar: user.userpic,
       username: user.username,
       fixed: config.fixedHeader,
       onAllNotificationsRead() {

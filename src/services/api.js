@@ -2,8 +2,8 @@
 const PATH_MAP = {
   queryRouteList: '/routes',
 
-  queryUserInfo: '/user',
-  logoutUser: '/user/logout',
+  queryUserInfo: 'POST /manager/session',
+  logoutUser: 'DELETE /manager/logout',
   loginUser: 'POST /manager/login',
 
   queryUser: '/user/:id',

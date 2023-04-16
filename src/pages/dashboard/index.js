@@ -4,7 +4,7 @@ import { connect } from 'umi'
 
 
 const Dashboard = (props) => {
-  console.log(props);
+
   return (
     <div>
       Dashboard

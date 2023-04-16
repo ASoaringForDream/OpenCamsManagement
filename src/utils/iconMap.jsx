@@ -12,7 +12,6 @@ import {
   LineOutlined,
   BarChartOutlined,
   AreaChartOutlined,
-  UserAddOutlined
 } from '@ant-design/icons'
 
 const iconMap = {

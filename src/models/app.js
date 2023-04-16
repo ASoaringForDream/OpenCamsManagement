@@ -1,14 +1,14 @@
 import { history } from 'umi'
 import { stringify } from 'qs'
 import store from 'store'
-import { ROLE_TYPE } from 'utils/constant'
 import { queryLayout } from 'utils'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
 import api from 'api'
 import config from 'config'
+import { message } from 'antd'
 const { pathToRegexp } = require("path-to-regexp")
 
-const { queryRouteList, logoutUser, queryUserInfo } = api
+const { logoutUser, queryUserInfo } = api
 
 const goDashboard = () => {
   if (pathToRegexp(['/', '/login']).exec(window.location.pathname)) {
@@ -38,7 +38,7 @@ const app = {
   },
   subscriptions: {
     setup({ dispatch }) {
-      // dispatch({ type: 'query' })
+      dispatch({ type: 'query' })
     },
     setupHistory({ dispatch, history }) {
       history.listen(location => {
@@ -66,40 +66,12 @@ const app = {
     },
   },
   effects: {
-    *query({ payload }, { call, put, select }) {
-      // store isInit to prevent query trigger by refresh
-      const isInit = store.get('isInit')
-      if (isInit) {
-        goDashboard()
-        return
-      }
+    *query(_, { call, select }) {
+
       const { locationPathname } = yield select(_ => _.app)
-      const { success, user } = yield call(queryUserInfo, payload)
-      if (success && user) {
-        const { list } = yield call(queryRouteList)
-        const { permissions } = user
-        let routeList = list
-        if (
-          permissions.role === ROLE_TYPE.ADMIN ||
-          permissions.role === ROLE_TYPE.DEVELOPER
-        ) {
-          permissions.visit = list.map(item => item.id)
-        } else {
-          routeList = list.filter(item => {
-            const cases = [
-              permissions.visit.includes(item.id),
-              item.mpid
-                ? permissions.visit.includes(item.mpid) || item.mpid === '-1'
-                : true,
-              item.bpid ? permissions.visit.includes(item.bpid) : true,
-            ]
-            return cases.every(_ => _)
-          })
-        }
-        store.set('routeList', routeList)
-        store.set('permissions', permissions)
-        store.set('user', user)
-        store.set('isInit', true)
+      const { errno, data } = yield call(queryUserInfo)
+      if (!errno) {
+        store.set('user', data)
         goDashboard()
       } else if (queryLayout(config.layouts, locationPathname) !== 'public') {
         history.push({
@@ -111,16 +83,13 @@ const app = {
       }
     },
 
-    *signOut({ payload }, { call, put }) {
-      const data = yield call(logoutUser)
-      if (data.success) {
-        store.set('routeList', [])
-        store.set('permissions', { visit: [] })
+    *signOut(_, { call, put }) {
+      const { errno, errmsg } = yield call(logoutUser)
+      if (!errno) {
         store.set('user', {})
-        store.set('isInit', false)
         yield put({ type: 'query' })
       } else {
-        throw data
+        message.error(errmsg)
       }
     },
   },

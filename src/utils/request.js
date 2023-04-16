@@ -17,6 +17,7 @@ axios.interceptors.request.use(function (config) {
 }, function (error) {
   return Promise.reject(error);
 });
+axios.defaults.withCredentials = true
 
 export default function request(options) {
   let { data, url } = options
@@ -42,7 +43,7 @@ export default function request(options) {
   } catch (e) {
     message.error(e.message)
   }
-  console.log(options);
+
   options.url = url
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
