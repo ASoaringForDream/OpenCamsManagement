@@ -72,7 +72,7 @@ class PrimaryLayout extends PureComponent {
           >
             <Header {...headerProps} />
             <Content className={styles.content}>
-              <Bread routeList={newRouteList} />
+              <Bread menus={MENU} />
               { children }
             </Content>
             <FloatButton.BackTop

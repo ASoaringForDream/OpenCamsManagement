@@ -23,14 +23,14 @@ export const MENU  = [
         id: '21',
         pid: '2',
         name: '管理员',
-        icon: 'shopping-cart',
+        icon: 'team',
         route: '/user/manager',
       },
       {
         id: '22',
         pid: '2',
         name: '用户',
-        icon: 'shopping-cart',
+        icon: 'user',
         route: '/user/user',
       }
     ]

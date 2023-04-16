@@ -36,6 +36,13 @@ export function queryBreads(array, path) {
     name: '首页',
     route: '/dashboard'
   }]
+  const pathArr = path.slice(1).split('/').map(i => '/' + i)
+  const parent = array.find(i => pathToRegexp(i.route).exec(pathArr[0]))
+  parent && result.push(parent)
+  if(pathArr.length === 2) {
+    const son = parent.children?.find(i => pathToRegexp(i.route).exec(path))
+    son && result.push(son)
+  }
   return result
 }
 
