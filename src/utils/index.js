@@ -1,6 +1,6 @@
 import store from 'store'
 import { i18n } from './config'
-
+import { cloneDeep } from 'lodash'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
@@ -100,6 +100,35 @@ export function queryLayout(layouts, pathname) {
   }
 
   return result
+}
+
+export const getPermissionMenus = (menus, roleList) => {
+  let result = cloneDeep(menus)
+  result = result.filter(i => {
+    if(Array.isArray(i.children)) {
+      i.children = i.children.filter(i => roleList.includes(i.role))
+      return i.children.length > 0
+    }
+    return roleList.includes(i.role)
+  })
+  return result
+}
+
+export const hasPermission = (menus, pathname, role) => {
+  let currMenu = null
+  menus.forEach(i => {
+    if(Array.isArray(i.children)) {
+      i.children.forEach(item => {
+        if(item.route === pathname) {
+          currMenu = item
+        }
+      })
+    }
+    if(i.route === pathname) {
+      currMenu = i
+    }
+  });
+  return currMenu ? role.includes(currMenu?.role) : false
 }
 
 

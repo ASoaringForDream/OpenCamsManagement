@@ -4,8 +4,9 @@ import { withRouter } from 'umi'
 import { connect } from 'umi'
 import { MyLayout, GlobalFooter } from 'components'
 import { FloatButton, Layout } from 'antd';
-import { config } from 'utils'
+import { config,  hasPermission } from 'utils'
 import { MENU } from 'utils/constant'
+import Error from '../pages/404'
 import styles from './PrimaryLayout.less'
 import store from 'store'
 
@@ -24,10 +25,11 @@ class PrimaryLayout extends PureComponent {
   }
 
   render() {
-    const { app, dispatch, children } = this.props
+    const { app, dispatch, children, location } = this.props
     const { theme, collapsed, notifications } = app
     const user = store.get('user') || {}
     const { onCollapseChange } = this
+    const role = user?.role_ids?.role_ids || []
 
     const headerProps = {
       collapsed,
@@ -47,6 +49,7 @@ class PrimaryLayout extends PureComponent {
     const siderProps = {
       theme,
       menus: MENU,
+      role: role,
       collapsed,
       onThemeChange(theme) {
         dispatch({
@@ -55,6 +58,8 @@ class PrimaryLayout extends PureComponent {
         })
       },
     }
+
+    const has = hasPermission(MENU, location.pathname, role)
 
     return (
       (<Fragment>
@@ -68,7 +73,7 @@ class PrimaryLayout extends PureComponent {
             <Header {...headerProps} />
             <Content className={styles.content}>
               <Bread menus={MENU} />
-              { children }
+              { has ? children : <Error /> }
             </Content>
             <FloatButton.BackTop
               className={styles.backTop}

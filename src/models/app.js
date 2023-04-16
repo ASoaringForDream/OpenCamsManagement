@@ -67,7 +67,6 @@ const app = {
   },
   effects: {
     *query(_, { call, select }) {
-
       const { locationPathname } = yield select(_ => _.app)
       const { errno, data } = yield call(queryUserInfo)
       if (!errno) {

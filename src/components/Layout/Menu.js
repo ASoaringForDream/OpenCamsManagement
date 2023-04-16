@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Menu } from 'antd'
 import { NavLink, withRouter } from 'umi'
-import { queryAncestors } from 'utils'
+import { queryAncestors, getPermissionMenus } from 'utils'
 import iconMap from 'utils/iconMap'
 import store from 'store'
 
@@ -65,6 +65,7 @@ class SiderMenu extends PureComponent {
     const {
       collapsed,
       theme,
+      role,
       menus,
       location,
     } = this.props
@@ -76,6 +77,7 @@ class SiderMenu extends PureComponent {
       : {
           openKeys: this.state.openKeys,
         }
+    const currMenus = getPermissionMenus(menus, role)
 
     return (
       <Menu
@@ -85,7 +87,7 @@ class SiderMenu extends PureComponent {
         selectedKeys={selectedKeys}
         {...menuProps}
       >
-        {this.generateMenus(menus)}
+        {this.generateMenus(currMenus)}
       </Menu>
     )
   }
@@ -93,6 +95,7 @@ class SiderMenu extends PureComponent {
 
 SiderMenu.propTypes = {
   menus: PropTypes.array,
+  role: PropTypes.array,
   theme: PropTypes.string,
   isMobile: PropTypes.bool,
   onCollapseChange: PropTypes.func,

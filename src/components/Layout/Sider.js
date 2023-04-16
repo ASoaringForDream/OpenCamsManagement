@@ -15,6 +15,7 @@ class Sider extends PureComponent {
       menus,
       theme,
       collapsed,
+      role,
       onThemeChange,
     } = this.props
 
@@ -46,6 +47,7 @@ class Sider extends PureComponent {
               menus={menus}
               theme={theme}
               collapsed={collapsed}
+              role={role}
             />
           </ScrollBar>
         </div>
@@ -74,9 +76,9 @@ class Sider extends PureComponent {
 Sider.propTypes = {
   menus: PropTypes.array,
   theme: PropTypes.string,
+  role: PropTypes.array,
   collapsed: PropTypes.bool,
   onThemeChange: PropTypes.func,
-  onCollapseChange: PropTypes.func,
 }
 
 export default Sider
