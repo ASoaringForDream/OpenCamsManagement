@@ -8,7 +8,7 @@ import config from 'config'
 import { message } from 'antd'
 const { pathToRegexp } = require("path-to-regexp")
 
-const { logoutUser, queryUserInfo } = api
+const { logoutUser, queryUserInfo, queryRoleList } = api
 
 const goDashboard = () => {
   if (pathToRegexp(['/', '/login']).exec(window.location.pathname)) {
@@ -21,15 +21,7 @@ const goDashboard = () => {
 const app = {
   namespace: 'app',
   state: {
-    routeList: [
-      {
-        id: '1',
-        icon: 'laptop',
-        name: 'Dashboard',
-        zhName: '仪表盘',
-        router: '/dashboard',
-      },
-    ],
+    roleList: [],
     locationPathname: '',
     locationQuery: {},
     theme: store.get('theme') || 'light',
@@ -39,6 +31,7 @@ const app = {
   subscriptions: {
     setup({ dispatch }) {
       dispatch({ type: 'query' })
+      dispatch({ type: 'queryRoleList' })
     },
     setupHistory({ dispatch, history }) {
       history.listen(location => {
@@ -81,7 +74,17 @@ const app = {
         })
       }
     },
-
+    *queryRoleList(_, { put, call }) {
+      const { errno, data } = yield call(queryRoleList)
+      if(!errno) {
+        yield put({ 
+          type: 'updateState',
+          payload: {
+            roleList: data
+          }
+        })
+      }
+    },
     *signOut(_, { call, put }) {
       const { errno, errmsg } = yield call(logoutUser)
       if (!errno) {

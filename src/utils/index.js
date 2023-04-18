@@ -131,6 +131,12 @@ export const hasPermission = (menus, pathname, role) => {
   return currMenu ? role.includes(currMenu?.role) : false
 }
 
+export const hasRole = (roles) => {
+  const user = store.get('user') || {}
+  const roleIDs = user?.role_ids?.role_ids || []
+  return roles.some(i => roleIDs.includes(i))
+}
+
 
 export function getLocale() {
   return store.get('locale') || defaultLanguage

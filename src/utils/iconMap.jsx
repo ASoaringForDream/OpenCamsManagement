@@ -12,6 +12,7 @@ import {
   LineOutlined,
   BarChartOutlined,
   AreaChartOutlined,
+  UserSwitchOutlined
 } from '@ant-design/icons'
 
 const iconMap = {
@@ -28,6 +29,7 @@ const iconMap = {
   user: <UserOutlined />,
   api: <ApiOutlined />,
   edit: <EditOutlined />,
+  manager: <UserSwitchOutlined />
 }
 
 export default iconMap

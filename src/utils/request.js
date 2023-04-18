@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { cloneDeep } from 'lodash'
 import { message } from 'antd'
+import qs from 'qs'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
 const { parse, compile } = require("path-to-regexp")
 
@@ -9,9 +10,6 @@ window.cancelRequest = new Map()
 
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  if(config.method === 'post') {
-    // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-  }
   // config.headers.token = window.localStorage.getItem('token');
   return config;
 }, function (error) {
@@ -20,7 +18,7 @@ axios.interceptors.request.use(function (config) {
 axios.defaults.withCredentials = true
 
 export default function request(options) {
-  let { data, url } = options
+  let { data, url, method } = options
   const cloneData = cloneDeep(data)
 
   try {
@@ -45,6 +43,11 @@ export default function request(options) {
   }
 
   options.url = url
+  if(method === 'GET') {
+    const query = qs.stringify(data)
+    options.url = `${options.url}?${query}`
+    delete options.data
+  }
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {
       pathname: window.location.pathname,

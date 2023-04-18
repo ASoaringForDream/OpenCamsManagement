@@ -17,7 +17,7 @@ export const MENU  = [
   {
     id: '2',
     name: '人员管理',
-    icon: 'user',
+    icon: 'manager',
     route: '/user',
     children: [
       {
@@ -37,5 +37,20 @@ export const MENU  = [
         role: '3',
       }
     ]
+  }
+]
+
+export const SEX_MAP = [
+  {
+    label: '男',
+    value: '男'
+  },
+  {
+    label: '女',
+    value: '女'
+  },
+  {
+    label: '保密',
+    value: '保密'
   }
 ]
