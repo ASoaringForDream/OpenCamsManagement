@@ -1,18 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Input, DatePicker, Button, Select, Upload, message } from 'antd'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
+import moment from 'moment'
 import { connect } from 'umi'
-import { SEX_MAP } from 'utils/constant'
+import { SEX_MAP, STATE_MAP } from 'utils/constant'
 
-const AddManager = ({
-  role,
+const EditUser = ({
+  initValue,
   dispatch,
   handleOk
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+
+  useEffect(() => {
+    setImageUrl(initValue.userpic)
+    form.setFieldsValue({
+      state: initValue.state,
+      name: initValue.name,
+      sex: initValue.sex,
+      mailbox: initValue.mailbox,
+      telephone: initValue.telephone,
+      birth: moment(initValue.birth).add(8, 'hours'),
+      
+    })
+  }, [form, initValue])
+
   const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -42,21 +57,31 @@ const AddManager = ({
     }
   };
   const handleFinish = (values) => {
-
     dispatch({
-      type: 'manager/addManager',
+      type: 'user/editUser',
       payload: {
         ...values,
         birth: values.birth?.format('YYYY-MM-DD'),
-        userpic: imageUrl
+        userpic: imageUrl,
+        id: initValue.id
       },
       cb: () => {
         handleOk()
-        form.resetFields()
-        setImageUrl(null)
+        handleReset()
       }
     })
-
+  }
+  const handleReset = () => {
+    form.setFieldsValue({
+      state: initValue.state,
+      name: initValue.name,
+      sex: initValue.sex,
+      mailbox: initValue.mailbox,
+      telephone: initValue.telephone,
+      birth: moment(initValue.birth).add(8, 'hours'),
+      
+    })
+    setImageUrl(initValue.userpic)
   }
   const layout = {
     labelCol: {
@@ -79,7 +104,6 @@ const AddManager = ({
       </div>
     </div>
   );
-
   return (
     <Form
       name="nest-messages"
@@ -91,31 +115,9 @@ const AddManager = ({
       form={form}
     >
       <Form.Item
-        name="username"
-        label="用户名"
-        rules={[
-          {
-            required: true,
-          },
-          () => ({
-            validator(_, value) {
-              if (!value || /^[a-zA-Z]\w{5,17}$/.test(value)) {
-                return Promise.resolve();
-              }
-              return Promise.reject(new Error('用户名必须是8-18位(由字母数字下划线组成,字母开头)'));
-            },
-          }),
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
         name="password"
         label="密码"
         rules={[
-          {
-            required: true,
-          },
           () => ({
             validator(_, value) {
               if (!value || /^[a-zA-Z0-9]{6,18}$/.test(value)) {
@@ -133,9 +135,6 @@ const AddManager = ({
         label="重复密码"
         dependencies={['password']}
         rules={[
-          {
-            required: true,
-          },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('password') === value) {
@@ -149,8 +148,8 @@ const AddManager = ({
         <Input.Password />
       </Form.Item>
       <Form.Item
-        name="role"
-        label="权限角色"
+        name="state"
+        label="用户状态"
         rules={[
           {
             required: true,
@@ -158,13 +157,13 @@ const AddManager = ({
         ]}
       >
         <Select
-          placeholder="管理员角色"
+          placeholder="请选择用户账号状态"
           showSearch
           allowClear
           filterOption={(input, option) =>
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
           }
-          options={role.map(i => ({ value: i.id, label: i.name }))}
+          options={STATE_MAP}
         />
       </Form.Item>
       <Form.Item
@@ -276,15 +275,20 @@ const AddManager = ({
       </Form.Item>
       <Form.Item
         wrapperCol={{
-          offset: 20,
+          offset: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
-          创建
-        </Button>
+        <div className='handle-box'>
+          <Button type="link" onClick={handleReset}>
+            重置
+          </Button>
+          <Button type="primary" htmlType="submit">
+            提交
+          </Button>
+        </div>
       </Form.Item>
     </Form>
   )
 }
 
-export default connect(({ dispatch }) => ({ dispatch }))(AddManager)
+export default connect(({ dispatch }) => ({ dispatch }))(EditUser)

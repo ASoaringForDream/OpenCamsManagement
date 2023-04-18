@@ -58,7 +58,6 @@ const EditManager = ({
     }
   };
   const handleFinish = (values) => {
-    handleReset()
     dispatch({
       type: 'manager/editManager',
       payload: {
@@ -66,12 +65,23 @@ const EditManager = ({
         birth: values.birth?.format('YYYY-MM-DD'),
         userpic: imageUrl,
         id: initValue.id
+      },
+      cb: () => {
+        handleOk()
+        handleReset()
       }
     })
-    handleOk()
   }
   const handleReset = () => {
-    form.resetFields()
+    form.setFieldsValue({
+      role: initValue.role,
+      name: initValue.name,
+      sex: initValue.sex,
+      mailbox: initValue.mailbox,
+      telephone: initValue.telephone,
+      birth: moment(initValue.birth).add(8, 'hours'),
+      
+    })
     setImageUrl(initValue.userpic)
   }
   const layout = {

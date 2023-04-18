@@ -37,6 +37,30 @@ export const MENU  = [
         role: '3',
       }
     ]
+  },
+  {
+    id: '3',
+    name: '权限管理',
+    icon: 'role',
+    route: '/role',
+    children: [
+      {
+        id: '31',
+        pid: '2',
+        name: '角色管理',
+        icon: 'character',
+        route: '/role/character',
+        role: '2',
+      },
+      {
+        id: '32',
+        pid: '2',
+        name: '用户',
+        icon: 'roleList',
+        route: '/role/roleList',
+        role: '3',
+      }
+    ]
   }
 ]
 
@@ -52,5 +76,16 @@ export const SEX_MAP = [
   {
     label: '保密',
     value: '保密'
+  }
+]
+
+export const STATE_MAP = [
+  {
+    label: '正常',
+    value: '正常'
+  },
+  {
+    label: '封禁',
+    value: '封禁'
   }
 ]

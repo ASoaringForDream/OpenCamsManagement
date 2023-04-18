@@ -1,10 +1,20 @@
 import React from 'react'
+import { Card } from 'antd'
+import Filter from './conponents/filter'
+import List from './conponents/list'
 
 const User = () => {
   return (
-    <div>
-      user界面
-    </div>
+    <>
+      <Card>
+        <Filter></Filter>
+      </Card>
+      <Card style={{
+        marginTop:'20px'
+      }}>
+        <List></List>
+      </Card>
+    </>
   )
 }
 

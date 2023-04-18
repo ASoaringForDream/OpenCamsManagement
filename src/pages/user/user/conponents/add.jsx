@@ -3,10 +3,9 @@ import { Form, Input, DatePicker, Button, Select, Upload, message } from 'antd'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
 import { connect } from 'umi'
-import { SEX_MAP } from 'utils/constant'
+import { STATE_MAP, SEX_MAP } from 'utils/constant'
 
-const AddManager = ({
-  role,
+const AddUser = ({
   dispatch,
   handleOk
 }) => {
@@ -42,9 +41,8 @@ const AddManager = ({
     }
   };
   const handleFinish = (values) => {
-
     dispatch({
-      type: 'manager/addManager',
+      type: 'user/addUser',
       payload: {
         ...values,
         birth: values.birth?.format('YYYY-MM-DD'),
@@ -56,7 +54,6 @@ const AddManager = ({
         setImageUrl(null)
       }
     })
-
   }
   const layout = {
     labelCol: {
@@ -149,8 +146,8 @@ const AddManager = ({
         <Input.Password />
       </Form.Item>
       <Form.Item
-        name="role"
-        label="权限角色"
+        name="state"
+        label="账号状态"
         rules={[
           {
             required: true,
@@ -158,13 +155,13 @@ const AddManager = ({
         ]}
       >
         <Select
-          placeholder="管理员角色"
+          placeholder="请选择账号状态"
           showSearch
           allowClear
           filterOption={(input, option) =>
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
           }
-          options={role.map(i => ({ value: i.id, label: i.name }))}
+          options={STATE_MAP}
         />
       </Form.Item>
       <Form.Item
@@ -173,7 +170,7 @@ const AddManager = ({
         rules={[
           {
             required: true,
-            max: 20,
+            max:20,
           },
         ]}
       >
@@ -271,7 +268,7 @@ const AddManager = ({
         label="出生日期"
       >
         <DatePicker
-          format="YYYY-MM-DD"
+          format="YYYY-MM-DD" 
         />
       </Form.Item>
       <Form.Item
@@ -287,4 +284,4 @@ const AddManager = ({
   )
 }
 
-export default connect(({ dispatch }) => ({ dispatch }))(AddManager)
+export default connect(({ dispatch }) => ({ dispatch }))(AddUser)

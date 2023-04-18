@@ -13,10 +13,10 @@ const PATH_MAP = {
   queryRoleList: '/manager/rolelist',
 
   queryUserList: '/manager/users',
-  removeUser: 'DELETE /user/:id',
-  removeUserList: 'POST /users/delete',
-
-  queryPostList: '/posts',
+  addUser: 'POST /manager/adduser',
+  deleteUser: 'DELETE /manager/deleteuser',
+  eidtUser: 'POST /manager/edituser',
+  banUser: 'POST /manager/banuser',
 
   queryDashboard: '/dashboard',
 }
