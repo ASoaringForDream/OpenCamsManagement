@@ -33,6 +33,15 @@ class SiderMenu extends PureComponent {
     store.set('openKeys', newOpenKeys)
   }
 
+  handleClick = (item) => {
+    if(item.keyPath.length === 1) {
+      this.setState({
+        openKeys: [],
+      })
+      store.set('openKeys', [])
+    }
+  }
+
   generateMenus = data => {
     return data.map(item => {
       if (item.children) {
@@ -84,6 +93,7 @@ class SiderMenu extends PureComponent {
         mode="inline"
         theme={theme}
         onOpenChange={this.onOpenChange}
+        onClick={this.handleClick}
         selectedKeys={selectedKeys}
         {...menuProps}
       >

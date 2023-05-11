@@ -46,7 +46,7 @@ export const MENU  = [
     children: [
       {
         id: '31',
-        pid: '2',
+        pid: '3',
         name: '角色管理',
         icon: 'character',
         route: '/role/character',
@@ -54,10 +54,34 @@ export const MENU  = [
       },
       {
         id: '32',
-        pid: '2',
+        pid: '3',
         name: '权限列表',
         icon: 'roleList',
         route: '/role/roleList',
+        role: 3,
+      }
+    ]
+  },
+  {
+    id: '4',
+    name: '摄像机管理',
+    icon: 'cam',
+    route: '/camManage',
+    children: [
+      {
+        id: '41',
+        pid: '4',
+        name: '网络摄像头',
+        icon: 'internet',
+        route: '/camManage/cam',
+        role: 11,
+      },
+      {
+        id: '42',
+        pid: '4',
+        name: '摄像头分类',
+        icon: 'tag',
+        route: '/camManage/tag',
         role: 3,
       }
     ]
