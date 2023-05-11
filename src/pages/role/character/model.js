@@ -4,19 +4,18 @@ import api from 'api'
 import { pageModel } from 'utils/model'
 const { pathToRegexp } = require("path-to-regexp")
 
-const { queryUserList, addUser, deleteUser, editUser, banUser } = api
+const { queryCharacter, addCharacter, deleteCharacter, editCharacter } = api
 
-const user = modelExtend(pageModel, {
-  namespace: 'user',
-
+const character = modelExtend(pageModel, {
+  namespace: 'character',
   state: {},
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (pathToRegexp('/user/user').exec(location.pathname)) {
+        if (pathToRegexp('/role/character').exec(location.pathname)) {
           const payload = location.query || { page: 1, pageSize: 10 }
           dispatch({
-            type: 'queryUser',
+            type: 'queryCharacter',
             payload
           })
         }
@@ -24,8 +23,8 @@ const user = modelExtend(pageModel, {
     },
   },
   effects: {
-    *queryUser({ payload }, { put, call }) {
-      const { errno, errmsg, data } = yield call(queryUserList, {
+    *queryCharacter({ payload }, { put, call }) {
+      const { errno, errmsg, data } = yield call(queryCharacter, {
         id: payload?.id,
         username: payload?.username,
         state: payload?.state,
@@ -49,50 +48,38 @@ const user = modelExtend(pageModel, {
         message.error(errmsg)
       }
     },
-    *addUser({ payload, cb }, { call, put }) {
-      const { errno, errmsg } = yield call(addUser, payload)
+    *addCharacter({ payload, cb }, { put, call }) {
+      const { errno, errmsg } = yield call(addCharacter, payload)
       if(!errno) {
         cb && cb()
         message.success('创建成功')
         yield put({
-          type: 'queryUser',
+          type: 'queryCharacter',
           payload: { page: 1, pageSize: 10 }
         })
       } else {
         message.error(errmsg)
       }
     },
-    *delUser({ payload }, { call, put }) {
-      const { errno, errmsg } = yield call(deleteUser, payload)
+    *deleteCharacter({ payload }, { call, put }) {
+      const { errno, errmsg } = yield call(deleteCharacter, payload)
       if(!errno) {
         message.success('删除成功')
         yield put({
-          type: 'queryUser',
+          type: 'queryCharacter',
           payload: { page: 1, pageSize: 10 }
         })
       } else {
         message.error(errmsg)
       }
     },
-    *editUser({ payload, cb }, { call, put }) {
-      const { errno, errmsg } = yield call(editUser, payload)
+    *editCharacter({ payload, cb }, { call, put }) {
+      const { errno, errmsg } = yield call(editCharacter, payload)
       if(!errno) {
         cb && cb()
         message.success('更新成功')
         yield put({
-          type: 'queryUser',
-          payload: { page: 1, pageSize: 10 }
-        })
-      } else {
-        message.error(errmsg)
-      }
-    },
-    *banUser({ payload }, { call, put }) {
-      const { errno, errmsg } = yield call(banUser, payload)
-      if(!errno) {
-        message.success('更新成功')
-        yield put({
-          type: 'queryUser',
+          type: 'queryCharacter',
           payload: { page: 1, pageSize: 10 }
         })
       } else {
@@ -103,4 +90,4 @@ const user = modelExtend(pageModel, {
 })
 
 
-export default user
+export default character

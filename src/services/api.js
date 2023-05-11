@@ -7,7 +7,7 @@ const PATH_MAP = {
   queryManagerList: '/manager/managers',
   addManager: 'POST /manager/addmanager',
   deleteManager: 'DELETE /manager/deletemanager',
-  eidtManager: 'POST /manager/editmanager',
+  editManager: 'POST /manager/editmanager',
 
   queryRole: '/manager/roles',
   queryRoleList: '/manager/rolelist',
@@ -15,10 +15,13 @@ const PATH_MAP = {
   queryUserList: '/manager/users',
   addUser: 'POST /manager/adduser',
   deleteUser: 'DELETE /manager/deleteuser',
-  eidtUser: 'POST /manager/edituser',
+  editUser: 'POST /manager/edituser',
   banUser: 'POST /manager/banuser',
 
-  queryDashboard: '/dashboard',
+  queryCharacter: '/manager/characters',
+  addCharacter: 'POST /manager/addcharacter',
+  deleteCharacter: 'DELETE /manager/deletecharacter',
+  editCharacter: 'POST /manager/editcharacter',
 }
 
 export default PATH_MAP

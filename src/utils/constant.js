@@ -12,7 +12,7 @@ export const MENU  = [
     icon: 'dashboard',
     name: '仪表盘',
     route: '/dashboard',
-    role: '1'
+    role: 1
   },
   {
     id: '2',
@@ -26,7 +26,7 @@ export const MENU  = [
         name: '管理员',
         icon: 'team',
         route: '/user/manager',
-        role: '2',
+        role: 2,
       },
       {
         id: '22',
@@ -34,7 +34,7 @@ export const MENU  = [
         name: '用户',
         icon: 'user',
         route: '/user/user',
-        role: '3',
+        role: 3,
       }
     ]
   },
@@ -50,15 +50,15 @@ export const MENU  = [
         name: '角色管理',
         icon: 'character',
         route: '/role/character',
-        role: '2',
+        role: 11,
       },
       {
         id: '32',
         pid: '2',
-        name: '用户',
+        name: '权限列表',
         icon: 'roleList',
         route: '/role/roleList',
-        role: '3',
+        role: 3,
       }
     ]
   }

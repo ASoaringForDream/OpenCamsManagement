@@ -24,7 +24,7 @@ const List = ({ manager, loading, dispatch }) => {
     return (
       <>
         {
-          hasRole(['5']) && (
+          hasRole([5]) && (
             <Popconfirm
               title="删除管理员"
               description="确认要删除管理员?"
@@ -37,7 +37,7 @@ const List = ({ manager, loading, dispatch }) => {
           )
         }
         {
-          hasRole(['6']) && (
+          hasRole([6]) && (
             <Button className='btn-right' type='primary' onClick={() => showModal(record)}>编辑</Button>
           )
         }
@@ -147,7 +147,7 @@ const List = ({ manager, loading, dispatch }) => {
       render: (val) => moment().diff(moment(val).subtract(8, 'hours'), 'years')
     },
   ]
-  if (hasRole(['5', '6'])) {
+  if (hasRole([5, 6])) {
     columns.push(
       {
         title: '操作',

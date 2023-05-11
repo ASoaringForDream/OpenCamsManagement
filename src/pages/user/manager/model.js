@@ -4,7 +4,7 @@ import api from 'api'
 import { pageModel } from 'utils/model'
 const { pathToRegexp } = require("path-to-regexp")
 
-const { queryManagerList, queryRole, addManager, deleteManager, eidtManager } = api
+const { queryManagerList, queryRole, addManager, deleteManager, editManager } = api
 
 const manager = modelExtend(pageModel, {
   namespace: 'manager',
@@ -91,7 +91,7 @@ const manager = modelExtend(pageModel, {
       }
     },
     *editManager({ payload, cb }, { call, put }) {
-      const { errno, errmsg } = yield call(eidtManager, payload)
+      const { errno, errmsg } = yield call(editManager, payload)
       if(!errno) {
         cb && cb()
         message.success('更新成功')

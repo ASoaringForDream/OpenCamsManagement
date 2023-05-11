@@ -82,7 +82,7 @@ const Filter = ({
           <Col span={8} offset={16} className='handle-box'>
             <Button type="link" onClick={handleResetField}>重置</Button>
             <Button htmlType="submit" loading={loading.effects['manager/queryManager']}>查询</Button>
-            {hasRole(['4']) && (<Button type="primary" onClick={showModal}>创建管理员</Button>)}
+            {hasRole([4]) && (<Button type="primary" onClick={showModal}>创建管理员</Button>)}
           </Col>
         </Row>
       </Form>

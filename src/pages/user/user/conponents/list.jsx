@@ -25,7 +25,7 @@ const List = ({ user, loading, dispatch }) => {
     return (
       <>
         {
-          hasRole(['7']) && (
+          hasRole([7]) && (
             <Popconfirm
               title="删除用户"
               description="确认要删除用户?"
@@ -38,7 +38,7 @@ const List = ({ user, loading, dispatch }) => {
           )
         }
         {
-          hasRole(['10']) && (
+          hasRole([10]) && (
             <Button className='btn-right' type='primary' onClick={() => showModal(record)}>编辑</Button>
           )
         }
@@ -114,7 +114,7 @@ const List = ({ user, loading, dispatch }) => {
       render: (val, record) => (
         <>
           {
-            hasRole(['8']) ? (
+            hasRole([8]) ? (
               <Select
                 value={val}
                 options={STATE_MAP}
@@ -171,7 +171,7 @@ const List = ({ user, loading, dispatch }) => {
       render: (val) => moment().diff(moment(val).subtract(8, 'hours'), 'years')
     },
   ]
-  if (hasRole(['7', '10'])) {
+  if (hasRole([7, 10])) {
     columns.push(
       {
         title: '操作',
