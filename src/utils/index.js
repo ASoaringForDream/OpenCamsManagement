@@ -14,7 +14,7 @@ export request from './request'
 export { Color } from './theme'
 
 export const languages = i18n ? i18n.languages.map(item => item.key) : []
-export const defaultLanguage = i18n ? i18n.defaultLanguage : ''
+export const defaultLanguage = i18n ? i18n.defaultLanguage : 'zh'
 
 /**
  * Query objects that specify keys and values in an array where all values are objects.
