@@ -18,7 +18,9 @@ import {
   KeyOutlined,
   GlobalOutlined,
   InstagramOutlined,
-  TagOutlined
+  TagOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined
 } from '@ant-design/icons'
 
 const iconMap = {
@@ -41,7 +43,9 @@ const iconMap = {
   role: <KeyOutlined />,
   internet:<GlobalOutlined />,
   cam: <InstagramOutlined />,
-  tag: <TagOutlined />
+  tag: <TagOutlined />,
+  listView: <UnorderedListOutlined />,
+  cardView: <AppstoreOutlined />
 }
 
 export default iconMap

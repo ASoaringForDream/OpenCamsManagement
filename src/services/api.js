@@ -22,6 +22,11 @@ const PATH_MAP = {
   addCharacter: 'POST /manager/addcharacter',
   deleteCharacter: 'DELETE /manager/deletecharacter',
   editCharacter: 'POST /manager/editcharacter',
+
+  queryCams: '/manager/cams',
+  deleteCam: 'DELETE /manager/deletecam',
+  editCam: 'POST /manager/editcam',
+  queryCamTags: '/manager/camtags'
 }
 
 export default PATH_MAP
