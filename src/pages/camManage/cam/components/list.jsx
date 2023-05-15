@@ -23,7 +23,7 @@ const List = ({ cam, loading, dispatch }) => {
   };
   const confirm = (record) => {
     dispatch({
-      type: 'character/deleteCharacter',
+      type: 'cam/deleteCam',
       payload: {
         id: record.id
       }

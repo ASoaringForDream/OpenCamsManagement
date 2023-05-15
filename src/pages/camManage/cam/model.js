@@ -67,13 +67,14 @@ const cam = modelExtend(pageModel, {
         })
       }
     },
-    *deleteCam({ payload }, { call, put }) {
+    *deleteCam({ payload }, { select, call, put }) {
       const { errno, errmsg } = yield call(deleteCam, payload)
+      const { pagination } = yield select(app => app.cam)
       if(!errno) {
         message.success('删除成功')
         yield put({
           type: 'queryCams',
-          payload: { page: 1, pageSize: 10 }
+          payload: { page: pagination.current || 1, pageSize: pagination.pageSize || 10 }
         })
       } else {
         message.error(errmsg)

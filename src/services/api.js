@@ -26,7 +26,9 @@ const PATH_MAP = {
   queryCams: '/manager/cams',
   deleteCam: 'DELETE /manager/deletecam',
   editCam: 'POST /manager/editcam',
-  queryCamTags: '/manager/camtags'
+  queryCamTags: '/manager/camtags',
+
+  queryDashBoard: '/manager/dashboard'
 }
 
 export default PATH_MAP
