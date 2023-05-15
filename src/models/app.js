@@ -60,11 +60,17 @@ const app = {
   },
   effects: {
     *query(_, { call, select }) {
-      const { locationPathname } = yield select(_ => _.app)
+      const { locationPathname, locationQuery } = yield select(_ => _.app)
       const { errno, data } = yield call(queryUserInfo)
       if (!errno) {
         store.set('user', data)
-        goDashboard()
+        if(locationQuery.from) {
+          history.push({
+            pathname: locationQuery.from,
+          })
+        } else {
+          goDashboard()
+        }
       } else if (queryLayout(config.layouts, locationPathname) !== 'public') {
         history.push({
           pathname: '/login',
